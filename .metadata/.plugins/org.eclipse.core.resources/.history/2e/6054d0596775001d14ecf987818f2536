@@ -1,0 +1,22 @@
+/*
+ * pedestrian.c
+ *
+ *  Created on: Dec 6, 2022
+ *      Author: pc
+ */
+
+
+#include "pedestrian.h"
+#include "global.h"
+
+// 0-1 Green
+void pedestrian_cramble(){
+	if (isButtonflag(butp)){
+		if (status_ver == AUTO_GREEN || status_ver = AUTO_YELLOW){
+			SetPedesRed();
+		} else if (status_ver == AUTO_RED) {
+			SetPedesGreen();
+		}
+
+	}
+}

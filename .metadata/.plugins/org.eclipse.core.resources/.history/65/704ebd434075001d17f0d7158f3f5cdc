@@ -1,0 +1,14 @@
+/*
+ * Perdestrian.h
+ *
+ *  Created on: Dec 6, 2022
+ *      Author: pc
+ */
+
+#include "Perdestrian.h"
+
+void pedestrian_cramble(){
+	if (isButtonflag(butp)){
+
+	}
+}

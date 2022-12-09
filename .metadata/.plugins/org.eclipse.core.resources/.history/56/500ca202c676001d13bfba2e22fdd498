@@ -1,0 +1,35 @@
+/*
+ * pedestrian.c
+ *
+ *  Created on: Dec 6, 2022
+ *      Author: pc
+ */
+
+
+#include "pedestrian.h"
+
+
+// 0-1 Green
+int Ncycle_Pe_off = 2; // Number of cycle led pedestrian off
+void pedestrian_cramble(){
+	if (isButtonflag(butp)){
+		for (int i = 0; i < Ncycle_Pe_off * 3 ; i++ ){
+			switch (status_ver){
+			case AUTO_RED:
+				SetPedesGreen();
+				break;
+			case AUTO_GREEN:
+				SetPedesRed();
+				break;
+			case AUTO_YELLOW:
+
+			}
+		}
+		if (status_ver == AUTO_GREEN || status_ver == AUTO_YELLOW){
+			SetPedesRed();
+		} else if (status_ver == AUTO_RED) {
+			SetPedesGreen();
+		}
+
+	}
+}
