@@ -13,6 +13,7 @@ void fsm_mode_run(){
 		status_mode = MODE1;
 		status_ver = INIT;
 		status_hor = INIT;
+		status_pedes = Pedes_Off;
 		status_led7seg = INIT;
 		index_led = 0;
 		//setTimer1(500);
@@ -24,23 +25,23 @@ void fsm_mode_run(){
 			clearTimer2();
 			clearTimer3();
 			status_mode = MODE2;
-//			SetRedVerHor(); // to when blinky, led red ver and hor are the same
+			SetOffVerHor();// to when blinky, led red ver and hor are the same
 			status_ver = MODIFY_RED;
 			status_hor = MODIFY_RED;
 			led12 = MODE2;
 			led34 = timered;
 			status_led7seg = MODE_MODIFY_led7seg_1;
-			//setTimer3(1000);
+			setTimer3(1000);
 		}
 
 		break;
 	case MODE2:
-
 		if (isButtonflag(but1) == 1){
 			clearTimer1();
 			clearTimer2();
 			clearTimer3();
 			status_mode = MODE3;
+			SetOffVerHor();
 			status_ver = MODIFY_YELLOW;
 			status_hor = MODIFY_YELLOW;
 			led12 = MODE3;
@@ -67,6 +68,7 @@ void fsm_mode_run(){
 			status_mode = MODE4;
 			status_ver = MODIFY_GREEN;
 			status_hor = MODIFY_GREEN;
+			SetOffVerHor();
 			led12 = MODE4;
 			led34 = timegreen;
 			status_led7seg = MODE_MODIFY_led7seg_1;

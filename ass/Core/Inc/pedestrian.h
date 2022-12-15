@@ -17,5 +17,7 @@
 #define Ncycle_Pe_off	2 // Number of cycle led pedestrian off
 void pedestrian_cramble();
 void Buzzer_On();
-
+void Buzzer_Off();
+extern int dutycycle;
+extern int delay;
 #endif /* INC_PEDESTRIAN_H_ */

@@ -1,3 +1,4 @@
+"./Core/Src/TM1637.o"
 "./Core/Src/button.o"
 "./Core/Src/fsm_automatic_1.o"
 "./Core/Src/fsm_automatic_2.o"

@@ -7,8 +7,10 @@
 
 #include "main.h"
 #include "input_reading.h"
+#include "global.h"
+#include "software_timer.h"
 // we aim to work with more than one buttons
-#define N0_OF_BUTTONS 					3
+#define N0_OF_BUTTONS 					4
 // timer interrupt duration is 10ms , so to pass 1 second ,
 // we need to jump to the interrupt service routine 100 time
 #define DURATION_FOR_AUTO_INCREASING 	100
@@ -54,6 +56,7 @@ unsigned char is_button_pressed_3s(unsigned char index){
 
 enum ButtonState{ BUTTON_RELEASED , BUTTON_PRESSED , BUTTON_PRESSED_MORE_THAN_1_SECOND } ;
 enum ButtonState buttonState[N0_OF_BUTTONS] = {BUTTON_RELEASED} ;
+int counter10S = 0;
 void fsm_for_input_processing(uint8_t index ){
 	switch ( buttonState[index] ){
 		case BUTTON_RELEASED :
@@ -63,9 +66,19 @@ void fsm_for_input_processing(uint8_t index ){
 				counterForButtonPress1s[index] = 0;
 				flagForButtonPress1s[index] = 0;
 				flagForButton[index] = 1;
+			}else {
+				if(timer4_flag==1 && status_mode != MODE1){
+					counter10S++;
+					if(counter10S >= 10){
+						counter10S = 0;
+						status_mode = INIT;
+					}
+					setTimer4(1000);
+				}
 			}
 			break ;
 		case BUTTON_PRESSED :
+			counter10S = 0;
 			if (!is_button_pressed(index)){
 				buttonState[index] =	 BUTTON_RELEASED ;
 				flagForButton[index] = 0;
@@ -91,6 +104,7 @@ void fsm_for_input_processing(uint8_t index ){
 			}
 			break ;
 		case BUTTON_PRESSED_MORE_THAN_1_SECOND :
+			counter10S = 0;
 			if (! is_button_pressed(index)){
 			//if (buttonBuffer[index] == BUTTON_IS_RELEASED){
 				buttonState[index] = BUTTON_RELEASED;
@@ -127,6 +141,9 @@ void button_reading(void){
 			  break;
 		  case 2: // read data from Button 1
 			  debounceButtonBuffer0[i] = HAL_GPIO_ReadPin(BUTTON_3_GPIO_Port, BUTTON_3_Pin);
+			  break;
+		  case 3: // read data from Button 1
+			  debounceButtonBuffer0[i] = HAL_GPIO_ReadPin(BUTTON_P_GPIO_Port, BUTTON_P_Pin);
 			  break;
 		  default:
 			  break;

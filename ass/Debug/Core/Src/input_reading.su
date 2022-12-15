@@ -1,5 +1,5 @@
-input_reading.c:37:5:isButtonflag	16	static
-input_reading.c:45:15:is_button_pressed	16	static
-input_reading.c:50:15:is_button_pressed_3s	16	static
-input_reading.c:57:6:fsm_for_input_processing	16	static
-input_reading.c:117:6:button_reading	24	static
+../Core/Src/input_reading.c:39:5:isButtonflag	16	static
+../Core/Src/input_reading.c:47:15:is_button_pressed	16	static
+../Core/Src/input_reading.c:52:15:is_button_pressed_3s	16	static
+../Core/Src/input_reading.c:60:6:fsm_for_input_processing	16	static
+../Core/Src/input_reading.c:131:6:button_reading	24	static

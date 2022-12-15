@@ -113,38 +113,38 @@
 //	}
 //}
 
-const int MAX_LED = 4;
-int led_buffer[4] = {0, 0, 0, 0};
-
-void update7SEG(int index){
-    switch (index){
-		case 0: {
-			display7SEG(led_buffer[index]);
-			break ;
-		}
-		case 1:{
-			display7SEG(led_buffer[index]);
-			break ;
-		}
-		case 2:{
-			display7SEG(led_buffer[index]);
-			break ;
-		}
-		case 3:{
-			display7SEG(led_buffer[index]);
-			break ;
-		}
-		default :
-			break;
-    }
-}
-
-void updateLedBuffer(int led1_2,int led3_4){
-	led_buffer[0] = led1_2 / 10;
-	led_buffer[1] = led1_2 % 10;
-	led_buffer[2] = led3_4 / 10;
-	led_buffer[3] = led3_4 % 10;
-}
+//const int MAX_LED = 4;
+//int led_buffer[4] = {0, 0, 0, 0};
+//
+//void update7SEG(int index){
+//    switch (index){
+//		case 0: {
+//			display7SEG(led_buffer[index]);
+//			break ;
+//		}
+//		case 1:{
+//			display7SEG(led_buffer[index]);
+//			break ;
+//		}
+//		case 2:{
+//			display7SEG(led_buffer[index]);
+//			break ;
+//		}
+//		case 3:{
+//			display7SEG(led_buffer[index]);
+//			break ;
+//		}
+//		default :
+//			break;
+//    }
+//}
+//
+//void updateLedBuffer(int led1_2,int led3_4){
+//	led_buffer[0] = led1_2 / 10;
+//	led_buffer[1] = led1_2 % 10;
+//	led_buffer[2] = led3_4 / 10;
+//	led_buffer[3] = led3_4 % 10;
+//}
 
 void BlinkyRedVer(){
 	//HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_SET);
@@ -244,10 +244,13 @@ void BlinkyYellowHor(){
 //	HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET );
 //}
 
-//void SetRedVerHor(){
-//	HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_RESET);
-//	HAL_GPIO_WritePin(LED_RED_HOR_GPIO_Port, LED_RED_HOR_Pin, GPIO_PIN_RESET);
-//}
+void SetOffVerHor(){
+
+	HAL_GPIO_WritePin(LIGHT1_A_GPIO_Port, LIGHT1_A_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LIGHT1_B_GPIO_Port, LIGHT1_B_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LIGHT2_A_GPIO_Port, LIGHT2_A_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LIGHT2_B_GPIO_Port, LIGHT2_B_Pin, GPIO_PIN_RESET);
+}
 
 
 void SetOffVer(){
@@ -263,20 +266,20 @@ void SetPedesRed(){
 //	HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_RESET);
 //	HAL_GPIO_WritePin(LED_GREEN_VER_GPIO_Port, LED_GREEN_VER_Pin, GPIO_PIN_SET);
 //	HAL_GPIO_WritePin(LED_YELLOW_VER_GPIO_Port, LED_YELLOW_VER_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_SET);
 }
 void SetPedesGreen(){
 //	HAL_GPIO_WritePin(LED_RED_VER_GPIO_Port, LED_RED_VER_Pin, GPIO_PIN_RESET);
 //	HAL_GPIO_WritePin(LED_GREEN_VER_GPIO_Port, LED_GREEN_VER_Pin, GPIO_PIN_SET);
 //	HAL_GPIO_WritePin(LED_YELLOW_VER_GPIO_Port, LED_YELLOW_VER_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_RESET);
 }
 
 void SetPedesOff(){
-	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(P_LIGHT_A_GPIO_Port, P_LIGHT_A_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(P_LIGHT_B_GPIO_Port, P_LIGHT_B_Pin, GPIO_PIN_RESET);
 }
 
 void SetRedVer(){

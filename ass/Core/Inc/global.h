@@ -35,10 +35,15 @@
 #define MODE_MODIFY_led7seg_3 			32
 #define MODE_MODIFY_led7seg_4 			33
 
+#define Pedes_Off 			40
+#define Pedes_Go 			41
+#define Pedes_Stop			32
+
 extern  int status_mode;
 extern  int status_ver;
 extern  int status_hor;
 extern  int status_led7seg;
+extern int status_pedes;
 
 extern int index_led;
 

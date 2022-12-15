@@ -10,6 +10,7 @@ int status_mode = 0;
 int status_ver = 0;
 int status_hor = 0;
 int status_led7seg = 0;
+int status_pedes = 0;
 
 int index_led = 0;
 

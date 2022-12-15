@@ -31,7 +31,10 @@ void BlinkyRedHor();
 void BlinkyGreenHor();
 void BlinkyYellowHor();
 
-void SetRedVerHor();
+//void SetRedVerHor();
+//void SetGreenVerHor();
+//void SetYellowVerHor();
+void SetOffVerHor();
 
 void SetOffVer();
 void SetRedVer();

@@ -64,22 +64,27 @@ void Error_Handler(void);
 #define BUTTON_P_GPIO_Port GPIOA
 #define BUTTON_1_Pin GPIO_PIN_1
 #define BUTTON_1_GPIO_Port GPIOA
-#define BUTTON_2_Pin GPIO_PIN_4
-#define BUTTON_2_GPIO_Port GPIOA
-#define BUTTON_3_Pin GPIO_PIN_0
-#define BUTTON_3_GPIO_Port GPIOB
-#define P_LIGHT_A_Pin GPIO_PIN_10
-#define P_LIGHT_A_GPIO_Port GPIOB
-#define P_LIGHT_B_Pin GPIO_PIN_8
-#define P_LIGHT_B_GPIO_Port GPIOA
-#define LIGHT1_A_Pin GPIO_PIN_10
-#define LIGHT1_A_GPIO_Port GPIOA
-#define LIGHT1_B_Pin GPIO_PIN_3
-#define LIGHT1_B_GPIO_Port GPIOB
-#define LIGHT2_B_Pin GPIO_PIN_4
+#define LIGHT2_A_Pin GPIO_PIN_4
+#define LIGHT2_A_GPIO_Port GPIOA
+#define LIGHT2_B_Pin GPIO_PIN_0
 #define LIGHT2_B_GPIO_Port GPIOB
-#define LIGHT2_A_Pin GPIO_PIN_5
-#define LIGHT2_A_GPIO_Port GPIOB
+#define BUTTON_2_Pin GPIO_PIN_6
+#define BUTTON_2_GPIO_Port GPIOC
+#define BUTTON_3_Pin GPIO_PIN_7
+#define BUTTON_3_GPIO_Port GPIOC
+#define CLK_Pin GPIO_PIN_8
+#define CLK_GPIO_Port GPIOC
+#define DATA_Pin GPIO_PIN_9
+#define DATA_GPIO_Port GPIOC
+#define LIGHT1_B_Pin GPIO_PIN_10
+#define LIGHT1_B_GPIO_Port GPIOC
+#define LIGHT1_A_Pin GPIO_PIN_11
+#define LIGHT1_A_GPIO_Port GPIOC
+#define P_LIGHT_A_Pin GPIO_PIN_8
+#define P_LIGHT_A_GPIO_Port GPIOB
+#define P_LIGHT_B_Pin GPIO_PIN_9
+#define P_LIGHT_B_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
@@ -89,5 +94,3 @@ void Error_Handler(void);
 #endif
 
 #endif /* __MAIN_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

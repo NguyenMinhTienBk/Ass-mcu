@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "scheduler.h"
+#include "TM1637.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,16 +72,28 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+char str[50];
+int increase = 30;
+//int delay = 380;
 void Buzzer_On(){
-	for (int i = 0; i < 255; i++ ){
 		if (timer6_flag == 1){
-			i += 255 / (timegreen + timeyellow);
-			if (i > 255) i = 255;
-			__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,i);
-			setTimer6(1000);
-		}
+			dutycycle += 1000 / ((timered)*5);
+			if (dutycycle > 1000) dutycycle = 1000;
+			__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,dutycycle);
+//			HAL_Delay(delay);
+			setTimer6(delay);
+			delay -= increase;
+			if (delay <= 0) delay = 10;
 	}
 }
+void Buzzer_Off(){
+	dutycycle = 0;
+	__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,dutycycle);
+}
+void Uart_transmit(){
+	HAL_UART_Transmit(&huart2, str, sprintf(str, "%s%d#","!7SEG:",led12), 1000);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -116,42 +129,41 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-//HAL_TIM_Base_Start_IT(&htim3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+
   status_mode = INIT;
+
   setTimer1(1000);
   setTimer2(1000);
   setTimer3(1000);
   setTimer4(1000);
   setTimer5(1000);
+  setTimer6(1000);
+
   SCH_Init();
   SCH_Add_Task(timerRun, 0, 10);
   SCH_Add_Task(button_reading, 0, 10);
   SCH_Add_Task(fsm_mode_run, 0 , 10);
   SCH_Add_Task(fsm_automatic_1_run, 0 , 10);
   SCH_Add_Task(fsm_automatic_2_run, 0 , 10);
- // SCH_Add_Task(fsm_mode_led7seg, 0, 10);
+  SCH_Add_Task(fsm_mode_led7seg, 0, 10);
   SCH_Add_Task(pedestrian_cramble, 0, 10);
-  char str[50];
+  SCH_Add_Task(Uart_transmit, 0, 10);
+
+  TM1637_SetBrightness(7);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  fsm_mode_run();
-//	  fsm_automatic_1_run();
-//	  fsm_automatic_2_run();
-	  if (timer5_flag == 1){
-		 HAL_UART_Transmit(&huart2, str, sprintf(str, "%s%d#","!7SEG:",led12), 1000);
-		 setTimer5(2000);
-	  }
-	  __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,10);
-	  HAL_Delay(1000);
-	  __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,100);
-	  HAL_Delay(1000);
-
-//	  fsm_mode_led7seg();
+	  SCH_Dispatch_Tasks();
+//	  if (timer5_flag == 1){
+////		 HAL_UART_Transmit(&huart2, str, sprintf(str, "%s%d#","!7SEG:",led12), 1000);
+//		  TM1637_DisplayDecimal(led12*100+led34,1);
+//		  setTimer5(10);
+//	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -181,6 +193,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -345,38 +358,62 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, P_LIGHT_A_Pin|LIGHT1_B_Pin|LIGHT2_B_Pin|LIGHT2_A_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LIGHT2_A_GPIO_Port, LIGHT2_A_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, P_LIGHT_B_Pin|LIGHT1_A_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LIGHT2_B_Pin|P_LIGHT_A_Pin|P_LIGHT_B_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : BUTTON_P_Pin BUTTON_1_Pin BUTTON_2_Pin */
-  GPIO_InitStruct.Pin = BUTTON_P_Pin|BUTTON_1_Pin|BUTTON_2_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, CLK_Pin|DATA_Pin|LIGHT1_B_Pin|LIGHT1_A_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : BUTTON_P_Pin BUTTON_1_Pin */
+  GPIO_InitStruct.Pin = BUTTON_P_Pin|BUTTON_1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : BUTTON_3_Pin */
-  GPIO_InitStruct.Pin = BUTTON_3_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(BUTTON_3_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin : LIGHT2_A_Pin */
+  GPIO_InitStruct.Pin = LIGHT2_A_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LIGHT2_A_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : P_LIGHT_A_Pin LIGHT1_B_Pin LIGHT2_B_Pin LIGHT2_A_Pin */
-  GPIO_InitStruct.Pin = P_LIGHT_A_Pin|LIGHT1_B_Pin|LIGHT2_B_Pin|LIGHT2_A_Pin;
+  /*Configure GPIO pins : LIGHT2_B_Pin P_LIGHT_A_Pin P_LIGHT_B_Pin */
+  GPIO_InitStruct.Pin = LIGHT2_B_Pin|P_LIGHT_A_Pin|P_LIGHT_B_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : P_LIGHT_B_Pin LIGHT1_A_Pin */
-  GPIO_InitStruct.Pin = P_LIGHT_B_Pin|LIGHT1_A_Pin;
+  /*Configure GPIO pin : PB10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : BUTTON_2_Pin BUTTON_3_Pin */
+  GPIO_InitStruct.Pin = BUTTON_2_Pin|BUTTON_3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : CLK_Pin DATA_Pin */
+  GPIO_InitStruct.Pin = CLK_Pin|DATA_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LIGHT1_B_Pin LIGHT1_A_Pin */
+  GPIO_InitStruct.Pin = LIGHT1_B_Pin|LIGHT1_A_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 }
 
@@ -415,5 +452,3 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

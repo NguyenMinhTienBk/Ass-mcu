@@ -13,7 +13,7 @@
 #include "button.h"
 #include "led_display.h"
 
-//void fsm_mode_led7seg();
+void fsm_mode_led7seg();
 
 
 #endif /* INC_FSM_MODE_LED7SEG_H_ */
