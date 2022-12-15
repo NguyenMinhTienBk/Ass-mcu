@@ -159,11 +159,11 @@ int main(void)
   while (1)
   {
 	  SCH_Dispatch_Tasks();
-//	  if (timer5_flag == 1){
-////		 HAL_UART_Transmit(&huart2, str, sprintf(str, "%s%d#","!7SEG:",led12), 1000);
-//		  TM1637_DisplayDecimal(led12*100+led34,1);
-//		  setTimer5(10);
-//	  }
+	  if (timer5_flag == 1){
+//		 HAL_UART_Transmit(&huart2, str, sprintf(str, "%s%d#","!7SEG:",led12), 1000);
+		  TM1637_DisplayDecimal(led12*100+led34,1);
+		  setTimer5(10);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
