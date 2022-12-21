@@ -29,7 +29,7 @@ void pedestrian_cramble(){
 				clearTimer6();
 				Buzzer_On();
 				count++;
-			}else if(status_ver == AUTO_GREEN || status_ver == AUTO_YELLOW){
+			}else {
 				status_pedes = Pedes_Stop;
 				Buzzer_Off();
 				count++;
