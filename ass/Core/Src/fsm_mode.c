@@ -57,6 +57,7 @@ void fsm_mode_run(){
 		}
 		if (isButtonflag(but3) == 1){
 			timered  = led34;
+//			timegreen = timered - timeyellow;
 		}
 		break;
 	case MODE3:
@@ -82,6 +83,7 @@ void fsm_mode_run(){
 		}
 		if (isButtonflag(but3) == 1){
 			timeyellow  = led34;
+//			timered = timegreen + timeyellow;
 		}
 
 		break;
@@ -104,6 +106,7 @@ void fsm_mode_run(){
 		}
 		if (isButtonflag(but3) == 1){
 			timegreen = led34;
+//			timered = timegreen + timeyellow;
 		}
 		break;
 	default:

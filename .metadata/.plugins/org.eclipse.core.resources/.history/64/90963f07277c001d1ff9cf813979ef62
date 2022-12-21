@@ -1,0 +1,98 @@
+/*
+ * pedestrian.c
+ *
+ *  Created on: Dec 6, 2022
+ *      Author: pc
+ */
+
+
+#include "pedestrian.h"
+#include "main.h"
+
+// 0-1 Green
+//int counter_Pedes_On = 0;
+//
+int count = 0;
+void pedestrian_cramble(){
+	switch (status_pedes){
+	case Pedes_Off:
+		SetPedesOff();
+		if (isButtonflag(butp) == 1){
+			count = 0;
+			if (status_ver == AUTO_RED){
+				status_pedes = Pedes_Go;
+				count++;
+			}else {
+				status_pedes = Pedes_stop;
+				count++;
+			}
+		}
+		break;
+	case Pedes_Go:
+		SetPedesGreen();
+		if (status_ver == AUTO_GREEN || status_ver == AUTO_YELLOW){
+			if (count >= Ncycle_Pe_off * 2) status_pedes = Pedes_Off;
+			status_pedes = Pedes_Stop;
+			count++;
+		}
+		break;
+	case Pedes_Stop:
+		SetPedesRed();
+		if (status_ver == AUTO_RED){
+			if (count >= Ncycle_Pe_off * 2) status_pedes = Pedes_Off;
+			status_pedes = Pedes_Go;
+			count++;
+		}
+		break;
+	}
+
+////	if (isButtonflag(butp)){
+//		 counter_Pedes_On = 3 * Ncycle_Pe_off;
+////		for (int i = 0; i < Ncycle_Pe_off * 3; i++ ){
+////			switch (status_ver){
+////			case AUTO_RED:
+////				SetPedesGreen();
+////				break;
+////			case AUTO_GREEN:
+////				SetPedesRed();
+////				break;
+////			case AUTO_YELLOW:
+////				SetPedesRed();
+////			default:
+////				break;
+////			}
+////		}
+//		while(1){
+//			if (timer6_flag == 1){
+//				HAL_UART_Transmit(&huart2, str, sprintf(str, "status_ver: %d -  counter_Pedes_On: %d - led12: %d\r\n",status_ver,led12), 1000);
+//				switch (status_ver){
+//					case AUTO_RED:
+//						SetPedesGreen();
+//						break;
+//					case AUTO_GREEN:
+//						SetPedesRed();
+//						Buzzer_On();
+//						break;
+//					case AUTO_YELLOW:
+//						SetPedesRed();
+//						break;
+//					default:
+//						break;
+//				}
+////				HAL_Delay(timeTimer(led12));
+//				counter_Pedes_On--;
+//				setTimer6(timeTimer(led12));
+//			}
+//			if (counter_Pedes_On < 0){
+//				SetPedesOff();
+//				break;
+//			}
+//		}
+////		if (status_ver == AUTO_GREEN || status_ver == AUTO_YELLOW){
+////			SetPedesRed();
+////		} else if (status_ver == AUTO_RED) {
+////			SetPedesGreen();
+////		}
+//
+////	}
+}
